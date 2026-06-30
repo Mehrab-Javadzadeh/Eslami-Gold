@@ -1,0 +1,30 @@
+.bar {
+  background: linear-gradient(135deg, #2a1f00, #3d2e00);
+  padding: 0.6rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.item { display: flex; align-items: center; gap: 0.5rem; }
+.label { color: #c9a227; font-size: 0.8rem; font-weight: 600; }
+.value { color: #fff; font-size: 0.95rem; font-weight: 700; }
+
+.up { background: #1a4a1a; color: #4caf50; font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+.down { background: #4a1a1a; color: #f44336; font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+
+.dot {
+  width: 7px; height: 7px;
+  background: #4caf50;
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.update { margin-right: auto; color: #777; font-size: 0.75rem; }

@@ -1,0 +1,46 @@
+.app { min-height: 100vh; }
+
+.nav {
+  background: #fff;
+  border-bottom: 2px solid var(--border);
+  padding: 0.4rem 1.5rem;
+  display: flex;
+  gap: 0.3rem;
+  overflow-x: auto;
+}
+
+.navBtn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+
+.navBtn:hover { color: var(--gold); background: var(--gold-pale); }
+.navActive { color: var(--gold) !important; background: var(--gold-pale) !important; font-weight: 600; }
+
+.main { max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem 3rem; }
+
+.sectionTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.count { font-size: 0.82rem; color: var(--muted); font-weight: 400; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.2rem;
+}
+
+.empty { text-align: center; padding: 4rem 1rem; color: var(--muted); font-size: 1.1rem; }

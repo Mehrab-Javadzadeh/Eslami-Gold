@@ -1,0 +1,28 @@
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.card:hover { box-shadow: 0 6px 20px rgba(184,134,11,0.18); transform: translateY(-2px); }
+
+.imgWrap {
+  width: 100%; height: 165px;
+  background: var(--gold-pale);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.img { width: 100%; height: 100%; object-fit: cover; }
+.emoji { font-size: 3.5rem; }
+
+.body { padding: 0.9rem 1rem; }
+.name { font-weight: 700; font-size: 0.98rem; margin-bottom: 0.35rem; }
+.meta { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.4rem; }
+.desc { font-size: 0.78rem; color: #999; margin-bottom: 0.5rem; line-height: 1.5; }
+
+.priceRow { border-top: 1px solid var(--border); padding-top: 0.65rem; margin-top: 0.5rem; }
+.priceLabel { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem; }
+.price { font-size: 1.05rem; font-weight: 700; color: var(--gold); }
+.formula { font-size: 0.72rem; color: #bbb; margin-top: 0.2rem; }
