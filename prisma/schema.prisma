@@ -1,0 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  weight      Float    // وزن به گرم (همیشه ذخیره‌سازی بر اساس گرم)
+  wagePercent Float    // درصد اجرت
+  category    String   // نوع طلا: گردنبند، گوشواره و ...
+  images      String   // آرایه‌ای JSON از مسیر عکس‌ها
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
