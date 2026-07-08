@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 
 export default function GoldPriceBar() {
   const [price, setPrice] = useState(null);
@@ -8,10 +8,14 @@ export default function GoldPriceBar() {
   const [error, setError] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
-  const fetchPrice = useCallback(async (force = false) => {
+  const getPrice = async (force = false) => {
     try {
-      const res = await fetch(`/api/gold-price${force ? "?force=true" : ""}`);
-      const data = await res.json();
+      const response = await fetch(
+        `/api/gold-price${force ? "?force=true" : ""}`
+      );
+
+      const data = await response.json();
+
       if (data.price) {
         setPrice(data.price);
         setUpdatedAt(data.updatedAt);
@@ -19,24 +23,33 @@ export default function GoldPriceBar() {
       } else {
         setError(true);
       }
-    } catch {
+    } catch (err) {
       setError(true);
     }
-  }, []);
+  };
 
   useEffect(() => {
-    fetchPrice();
-    const interval = setInterval(() => fetchPrice(false), 60000);
-    return () => clearInterval(interval);
-  }, [fetchPrice]);
+    getPrice();
+
+    const timer = setInterval(() => {
+      getPrice();
+    }, 60000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   const handleManualRefresh = async () => {
     if (refreshing) return;
+
     setRefreshing(true);
 
-    // حداقل نیم ثانیه انیمیشن نشون بده تا کلیک محسوس باشه، حتی اگه پاسخ سریع برگرده
-    const minSpinTime = new Promise((resolve) => setTimeout(resolve, 500));
-    await Promise.all([fetchPrice(true), minSpinTime]);
+    const delay = new Promise((resolve) => {
+      setTimeout(resolve, 500);
+    });
+
+    await Promise.all([getPrice(true), delay]);
 
     setRefreshing(false);
   };
@@ -51,17 +64,21 @@ export default function GoldPriceBar() {
   return (
     <div className="bg-gold-dark text-white text-sm py-2 px-4 flex items-center justify-between">
       <span>
-        {error && "دریافت قیمت با خطا مواجه شد"}
-        {!error && price === null && "در حال دریافت قیمت طلا..."}
-        {!error && price !== null && (
+        {error ? (
+          "دریافت قیمت با خطا مواجه شد"
+        ) : price === null ? (
+          "در حال دریافت قیمت طلا..."
+        ) : (
           <>
-            قیمت هر گرم طلای ۱۸ عیار: <strong>{price.toLocaleString("fa-IR")}</strong> ریال
+            قیمت هر گرم طلای ۱۸ عیار:{" "}
+            <strong>{price.toLocaleString("fa-IR")}</strong> ریال
           </>
         )}
       </span>
 
       <span className="flex items-center gap-1">
         {formattedTime && `آخرین به‌روزرسانی: ${formattedTime}`}
+
         <button
           onClick={handleManualRefresh}
           aria-label="به‌روزرسانی قیمت"
