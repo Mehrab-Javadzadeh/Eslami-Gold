@@ -33,7 +33,7 @@ export default function HomePage() {
       <Header />
       <GoldPriceBar />
 
-      <div className="px-4 py-6 max-w-6xl mx-auto">
+      <div className="px-3 sm:px-4 py-6 max-w-6xl mx-auto">
         {loading && <p className="text-gray-500 text-center">در حال بارگذاری محصولات...</p>}
         {error && <p className="text-red-500 text-center">{error}</p>}
         {!loading && products.length === 0 && !error && (

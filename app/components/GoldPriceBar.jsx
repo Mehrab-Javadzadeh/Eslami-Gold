@@ -62,7 +62,7 @@ export default function GoldPriceBar() {
     : null;
 
   return (
-    <div className="bg-gold-dark text-white text-sm py-2 px-4 flex items-center justify-between">
+    <div className="bg-gold-dark text-white text-xs sm:text-sm py-2 px-3 sm:px-4 flex flex-col sm:flex-row items-center justify-between gap-1 sm:gap-0 text-center sm:text-right">
       <span>
         {error ? (
           "دریافت قیمت با خطا مواجه شد"
@@ -82,7 +82,7 @@ export default function GoldPriceBar() {
         <button
           onClick={handleManualRefresh}
           aria-label="به‌روزرسانی قیمت"
-          className="p-1 hover:opacity-70 transition"
+          className="p-2 -m-1 hover:opacity-70 transition"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

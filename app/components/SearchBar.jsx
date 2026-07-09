@@ -11,7 +11,7 @@ function WeightInput({ placeholder, value, onValueChange, unit, onUnitChange }) 
         placeholder={placeholder}
         value={value}
         onChange={(e) => onValueChange(e.target.value)}
-        className="px-3 py-2 w-full outline-none min-w-0"
+        className="px-3 py-3 sm:py-2 w-full outline-none min-w-0 text-base"
       />
       <select
         value={unit}
@@ -28,7 +28,6 @@ function WeightInput({ placeholder, value, onValueChange, unit, onUnitChange }) 
   );
 }
 
-// عدد رو با کاما جدا می‌کنه تا خواندنش راحت‌تر بشه (مثلاً 1234567 -> 1,234,567)
 function formatWithCommas(value) {
   const digitsOnly = value.replace(/[^\d]/g, "");
   if (!digitsOnly) return "";
@@ -48,7 +47,7 @@ function PriceInput({ placeholder, value, onValueChange }) {
       placeholder={placeholder}
       value={formatWithCommas(value)}
       onChange={handleChange}
-      className="border rounded-lg px-3 py-2 w-full"
+      className="border rounded-lg px-3 py-3 sm:py-2 w-full text-base"
     />
   );
 }
@@ -78,14 +77,13 @@ export default function SearchBar({ open, onClose }) {
       minWagePercent: minWage || null,
       maxWagePercent: maxWage || null,
     };
-    // بعداً وصلش می‌کنیم به API جستجوی محصولات
     console.log(filters);
   };
 
   return (
     <div
-      className={`fixed top-16 left-0 w-full bg-white shadow-md z-20 overflow-hidden transition-all duration-300 ${
-        open ? "max-h-[36rem] py-4" : "max-h-0 py-0"
+      className={`fixed top-16 left-0 w-full bg-white shadow-md z-20 overflow-y-auto transition-all duration-300 ${
+        open ? "max-h-[85vh] py-4" : "max-h-0 py-0"
       }`}
     >
       <div className="max-w-3xl mx-auto px-4 flex flex-col gap-3">
@@ -94,10 +92,10 @@ export default function SearchBar({ open, onClose }) {
           placeholder="جستجوی محصول..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="border rounded-lg px-3 py-2 w-full"
+          className="border rounded-lg px-3 py-3 sm:py-2 w-full text-base"
         />
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <WeightInput
             placeholder="حداقل وزن"
             value={minWeight}
@@ -118,14 +116,14 @@ export default function SearchBar({ open, onClose }) {
             placeholder="حداقل درصد اجرت"
             value={minWage}
             onChange={(e) => setMinWage(e.target.value)}
-            className="border rounded-lg px-3 py-2"
+            className="border rounded-lg px-3 py-3 sm:py-2 text-base"
           />
           <input
             type="number"
             placeholder="حداکثر درصد اجرت"
             value={maxWage}
             onChange={(e) => setMaxWage(e.target.value)}
-            className="border rounded-lg px-3 py-2"
+            className="border rounded-lg px-3 py-3 sm:py-2 text-base"
           />
 
           <PriceInput
@@ -142,7 +140,7 @@ export default function SearchBar({ open, onClose }) {
 
         <button
           onClick={handleSearch}
-          className="bg-gold hover:bg-gold-dark text-black font-bold rounded-lg py-2"
+          className="bg-gold hover:bg-gold-dark text-black font-bold rounded-lg py-3 sm:py-2 text-base"
         >
           جستجو
         </button>
