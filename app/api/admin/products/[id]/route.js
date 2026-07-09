@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
+import { writeFile, mkdir, unlink } from "fs/promises";
 import path from "path";
 import { prisma } from "@/lib/prisma";
 import { verifyAdminToken } from "@/lib/auth";
-import { uploadImage, deleteImage } from "@/lib/objectStorage";
 
 async function isAdmin(request) {
   const token = request.cookies.get("admin_token")?.value;
@@ -50,12 +50,19 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: "همه‌ی فیلدهای الزامی را پر کنید" }, { status: 400 });
     }
 
-    // حذف عکس‌هایی که کاربر از لیست برداشته (از فضای ابری)
+    // حذف فیزیکی عکس‌هایی که کاربر از لیست برداشته
     const oldImages = JSON.parse(existing.images || "[]");
     const removedImages = oldImages.filter((img) => !keptImages.includes(img));
     for (const img of removedImages) {
-      await deleteImage(img);
+      try {
+        await unlink(path.join(process.cwd(), "public", img));
+      } catch {
+        // فایل از قبل نبود، مشکلی نیست
+      }
     }
+
+    const uploadDir = path.join(process.cwd(), "public", "uploads", "products");
+    await mkdir(uploadDir, { recursive: true });
 
     const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
     const newImagePaths = [];
@@ -68,9 +75,8 @@ export async function PUT(request, { params }) {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
       const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${path.extname(file.name)}`;
-      const key = `products/${uniqueName}`;
-      const url = await uploadImage(buffer, key, file.type);
-      newImagePaths.push(url);
+      await writeFile(path.join(uploadDir, uniqueName), buffer);
+      newImagePaths.push(`/uploads/products/${uniqueName}`);
     }
 
     const finalImages = [...keptImages, ...newImagePaths];
@@ -100,7 +106,11 @@ export async function DELETE(request, { params }) {
 
     const images = JSON.parse(product.images || "[]");
     for (const img of images) {
-      await deleteImage(img);
+      try {
+        await unlink(path.join(process.cwd(), "public", img));
+      } catch {
+        // فایل موجود نبود، مشکلی نیست
+      }
     }
 
     await prisma.product.delete({ where: { id } });

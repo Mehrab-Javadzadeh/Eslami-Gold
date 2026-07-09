@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
+import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { prisma } from "@/lib/prisma";
 import { verifyAdminToken } from "@/lib/auth";
-import { uploadImage } from "@/lib/objectStorage";
 
 async function isAdmin(request) {
   const token = request.cookies.get("admin_token")?.value;
@@ -41,8 +41,11 @@ export async function POST(request) {
       return NextResponse.json({ error: "همه‌ی فیلدهای الزامی را پر کنید" }, { status: 400 });
     }
 
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+    const uploadDir = path.join(process.cwd(), "public", "uploads", "products");
+    await mkdir(uploadDir, { recursive: true });
+
     const imagePaths = [];
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
 
     for (const file of files) {
       if (!file || typeof file === "string") continue;
@@ -55,10 +58,8 @@ export async function POST(request) {
       const buffer = Buffer.from(bytes);
 
       const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${path.extname(file.name)}`;
-      const key = `products/${uniqueName}`;
-
-      const url = await uploadImage(buffer, key, file.type);
-      imagePaths.push(url);
+      await writeFile(path.join(uploadDir, uniqueName), buffer);
+      imagePaths.push(`/uploads/products/${uniqueName}`);
     }
 
     const product = await prisma.product.create({

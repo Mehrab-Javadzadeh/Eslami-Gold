@@ -55,7 +55,7 @@ export default function EditProductPage() {
         setName(p.name);
         setDescription(p.description || "");
         setCategory(p.category);
-        setWeight(p.weight); // وزن ذخیره‌شده همیشه بر اساس گرم است
+        setWeight(p.weight);
         setWeightUnit("gram");
         setWagePercent(p.wagePercent);
         setExistingImages(p.images);
@@ -83,6 +83,17 @@ export default function EditProductPage() {
     URL.revokeObjectURL(newPreviews[index]);
     setNewImages((prev) => prev.filter((_, i) => i !== index));
     setNewPreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // انتخاب یک عکس موجود به‌عنوان عکس اصلی (انتقالش به ابتدای لیست)
+  const handleSetMainExisting = (index) => {
+    if (index === 0) return;
+    setExistingImages((prev) => {
+      const copy = [...prev];
+      const [item] = copy.splice(index, 1);
+      copy.unshift(item);
+      return copy;
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -133,10 +144,7 @@ export default function EditProductPage() {
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold">ویرایش محصول</h1>
-          <button
-            onClick={() => router.push("/admin/dashboard/products")}
-            className="text-sm text-gray-500 hover:text-gray-800"
-          >
+          <button onClick={() => router.push("/admin/dashboard/products")} className="text-sm text-gray-500 hover:text-gray-800">
             بازگشت به لیست
           </button>
         </div>
@@ -181,10 +189,28 @@ export default function EditProductPage() {
           <div>
             <label className="block text-sm text-gray-600 mb-1">عکس‌های فعلی</label>
             {existingImages.length === 0 && <p className="text-sm text-gray-400 mb-2">عکسی وجود ندارد</p>}
+            {existingImages.length > 0 && (
+              <p className="text-xs text-gray-400 mb-2">
+                روی یک عکس کلیک کن تا به‌عنوان «عکس اصلی» انتخاب شود.
+              </p>
+            )}
             <div className="grid grid-cols-4 gap-2 mb-3">
               {existingImages.map((src, i) => (
                 <div key={i} className="relative">
-                  <img src={src} alt={`عکس ${i + 1}`} className="w-full h-20 object-cover rounded-lg border" />
+                  <button type="button" onClick={() => handleSetMainExisting(i)} className="block w-full">
+                    <img
+                      src={src}
+                      alt={`عکس ${i + 1}`}
+                      className={`w-full h-20 object-cover rounded-lg border-2 ${
+                        i === 0 ? "border-gold-dark" : "border-transparent"
+                      }`}
+                    />
+                  </button>
+                  {i === 0 && (
+                    <span className="absolute bottom-1 right-1 bg-gold-dark text-white text-[10px] px-1.5 py-0.5 rounded">
+                      اصلی
+                    </span>
+                  )}
                   <RemoveButton onClick={() => handleRemoveExisting(i)} />
                 </div>
               ))}
