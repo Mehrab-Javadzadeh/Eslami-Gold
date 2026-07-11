@@ -113,6 +113,11 @@ See `.env.example` for the full list of required variables (hashed admin passwor
 
 ---
 
+## ⭐ Show Your Support
+If you found this project helpful, please give it a ⭐!
+
+---
+
 ## License
 
 This project is open-sourced under the [MIT License](LICENSE).
