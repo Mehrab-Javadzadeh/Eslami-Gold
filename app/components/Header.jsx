@@ -4,10 +4,12 @@ import { useState } from "react";
 import Image from "next/image";
 import SideMenu from "./SideMenu";
 import SearchBar from "./SearchBar";
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const { toggleTheme } = useTheme();
 
   return (
     <>
@@ -22,7 +24,11 @@ export default function Header() {
           </svg>
         </button>
 
-        <div className="relative h-11 w-28 sm:h-12 sm:w-32">
+        <button
+          onClick={toggleTheme}
+          aria-label="تغییر حالت شب و روز"
+          className="relative h-11 w-28 sm:h-12 sm:w-32"
+        >
           <Image
             src="/logo.png.jpg"
             alt="Eslami Gold"
@@ -30,7 +36,7 @@ export default function Header() {
             className="object-contain"
             priority
           />
-        </div>
+        </button>
 
         <button
           onClick={() => setSearchOpen(!searchOpen)}

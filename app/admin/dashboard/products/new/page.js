@@ -4,9 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PRODUCT_CATEGORIES } from "@/lib/categories";
 import { WEIGHT_UNITS } from "@/lib/weightUnits";
+import { useTheme } from "@/app/contexts/ThemeContext";
 
 export default function NewProductPage() {
   const router = useRouter();
+  const { isDark } = useTheme();
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -34,7 +36,6 @@ export default function NewProductPage() {
     setPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // انتقال عکس انتخاب‌شده به ابتدای لیست، یعنی همون چیزی که به‌عنوان عکس اصلی ذخیره می‌شه
   const handleSetMain = (index) => {
     if (index === 0) return;
     setImages((prev) => {
@@ -92,11 +93,11 @@ export default function NewProductPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 py-10 px-4">
+    <main className={`min-h-screen py-10 px-4 ${isDark ? "bg-black" : "bg-gray-50"}`}>
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">افزودن محصول جدید</h1>
-          <button onClick={() => router.push("/admin/dashboard")} className="text-sm text-gray-500 hover:text-gray-800">
+          <h1 className={`text-2xl font-bold ${isDark ? "text-white" : "text-gray-900"}`}>افزودن محصول جدید</h1>
+          <button onClick={() => router.push("/admin/dashboard")} className={isDark ? "text-sm text-gray-400 hover:text-gray-200" : "text-sm text-gray-500 hover:text-gray-800"}>
             بازگشت به پنل
           </button>
         </div>
@@ -150,11 +151,7 @@ export default function NewProductPage() {
                 <div className="grid grid-cols-4 gap-2 mt-2">
                   {previews.map((src, i) => (
                     <div key={i} className="relative">
-                      <button
-                        type="button"
-                        onClick={() => handleSetMain(i)}
-                        className="block w-full"
-                      >
+                      <button type="button" onClick={() => handleSetMain(i)} className="block w-full">
                         <img
                           src={src}
                           alt={`پیش‌نمایش ${i + 1}`}

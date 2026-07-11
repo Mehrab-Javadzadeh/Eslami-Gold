@@ -1,4 +1,5 @@
 import "./globals.css";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 export const metadata = {
   title: "Eslami Gold",
@@ -15,7 +16,9 @@ export default function RootLayout({ children }) {
           type="text/css"
         />
       </head>
-      <body className="bg-gray-50 text-gray-900">{children}</body>
+      <body className="bg-gray-50 text-gray-900">
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

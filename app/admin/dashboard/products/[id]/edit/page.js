@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { PRODUCT_CATEGORIES } from "@/lib/categories";
 import { WEIGHT_UNITS } from "@/lib/weightUnits";
+import { useTheme } from "@/app/contexts/ThemeContext";
 
 function RemoveButton({ onClick }) {
   return (
@@ -24,6 +25,7 @@ export default function EditProductPage() {
   const router = useRouter();
   const params = useParams();
   const productId = params.id;
+  const { isDark } = useTheme();
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -85,7 +87,6 @@ export default function EditProductPage() {
     setNewPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // انتخاب یک عکس موجود به‌عنوان عکس اصلی (انتقالش به ابتدای لیست)
   const handleSetMainExisting = (index) => {
     if (index === 0) return;
     setExistingImages((prev) => {
@@ -136,15 +137,19 @@ export default function EditProductPage() {
   };
 
   if (loading) {
-    return <main className="min-h-screen flex items-center justify-center text-gray-500">در حال بارگذاری...</main>;
+    return (
+      <main className={`min-h-screen flex items-center justify-center ${isDark ? "bg-black text-gray-300" : "text-gray-500"}`}>
+        در حال بارگذاری...
+      </main>
+    );
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 py-10 px-4">
+    <main className={`min-h-screen py-10 px-4 ${isDark ? "bg-black" : "bg-gray-50"}`}>
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">ویرایش محصول</h1>
-          <button onClick={() => router.push("/admin/dashboard/products")} className="text-sm text-gray-500 hover:text-gray-800">
+          <h1 className={`text-2xl font-bold ${isDark ? "text-white" : "text-gray-900"}`}>ویرایش محصول</h1>
+          <button onClick={() => router.push("/admin/dashboard/products")} className={isDark ? "text-sm text-gray-400 hover:text-gray-200" : "text-sm text-gray-500 hover:text-gray-800"}>
             بازگشت به لیست
           </button>
         </div>

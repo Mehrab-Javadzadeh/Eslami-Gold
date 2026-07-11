@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Header from "@/app/components/Header";
 import GoldPriceBar from "@/app/components/GoldPriceBar";
+import { useTheme } from "@/app/contexts/ThemeContext";
 
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const { isDark } = useTheme();
   const [product, setProduct] = useState(null);
   const [activeImage, setActiveImage] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -35,17 +37,17 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <main>
+      <main className={isDark ? "bg-black min-h-screen" : ""}>
         <Header />
         <GoldPriceBar />
-        <p className="text-center text-gray-500 py-10">در حال بارگذاری...</p>
+        <p className={`text-center py-10 ${isDark ? "text-gray-300" : "text-gray-500"}`}>در حال بارگذاری...</p>
       </main>
     );
   }
 
   if (error || !product) {
     return (
-      <main>
+      <main className={isDark ? "bg-black min-h-screen" : ""}>
         <Header />
         <GoldPriceBar />
         <div className="text-center py-10">
@@ -61,14 +63,16 @@ export default function ProductDetailPage() {
   const images = product.images || [];
 
   return (
-    <main>
+    <main className={isDark ? "bg-black min-h-screen" : ""}>
       <Header />
       <GoldPriceBar />
 
       <div className="max-w-4xl mx-auto px-4 py-6">
         <button
           onClick={() => router.push("/")}
-          className="text-sm text-gray-500 hover:text-gray-800 mb-4 flex items-center gap-1"
+          className={`text-sm mb-4 flex items-center gap-1 ${
+            isDark ? "text-gray-400 hover:text-gray-200" : "text-gray-500 hover:text-gray-800"
+          }`}
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -77,7 +81,6 @@ export default function ProductDetailPage() {
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* گالری عکس */}
           <div>
             <div className="w-full h-72 sm:h-96 bg-gray-100 rounded-xl overflow-hidden">
               {images.length > 0 ? (
@@ -104,21 +107,22 @@ export default function ProductDetailPage() {
             )}
           </div>
 
-          {/* اطلاعات محصول */}
-          <div className="flex flex-col gap-3">
+          <div className={`flex flex-col gap-3 ${isDark ? "text-white" : ""}`}>
             <span className="text-sm text-gold-dark font-bold">{product.category}</span>
             <h1 className="text-2xl font-bold">{product.name}</h1>
 
-            <div className="flex flex-col gap-1 text-gray-600 text-sm">
+            <div className={`flex flex-col gap-1 text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>
               <p>اجرت: {product.wagePercent.toLocaleString("fa-IR")}٪</p>
               <p>وزن: {product.weight.toLocaleString("fa-IR")} گرم</p>
             </div>
 
             {product.description && (
-              <p className="text-gray-700 leading-relaxed mt-2">{product.description}</p>
+              <p className={`leading-relaxed mt-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                {product.description}
+              </p>
             )}
 
-            <div className="mt-auto pt-4 border-t">
+            <div className={`mt-auto pt-4 border-t ${isDark ? "border-gray-700" : ""}`}>
               {product.price ? (
                 <p className="text-2xl font-bold text-gold-dark">
                   {product.price.toLocaleString("fa-IR")} ریال

@@ -1,9 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useTheme } from "../../contexts/ThemeContext";
 
 export default function AdminDashboardPage() {
   const router = useRouter();
+  const { isDark } = useTheme();
 
   const handleLogout = async () => {
     await fetch("/api/admin/logout", { method: "POST" });
@@ -11,10 +13,10 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 py-10 px-4">
+    <main className={`min-h-screen py-10 px-4 ${isDark ? "bg-black" : "bg-gray-50"}`}>
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold">پنل مدیریت</h1>
+          <h1 className={`text-2xl font-bold ${isDark ? "text-white" : "text-gray-900"}`}>پنل مدیریت</h1>
           <button onClick={handleLogout} className="text-sm text-red-500 hover:text-red-700">
             خروج از حساب
           </button>

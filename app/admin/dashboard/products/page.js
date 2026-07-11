@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTheme } from "@/app/contexts/ThemeContext";
 
 export default function ProductsListPage() {
   const router = useRouter();
+  const { isDark } = useTheme();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -47,10 +49,10 @@ export default function ProductsListPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 py-10 px-4">
+    <main className={`min-h-screen py-10 px-4 ${isDark ? "bg-black" : "bg-gray-50"}`}>
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">لیست محصولات</h1>
+          <h1 className={`text-2xl font-bold ${isDark ? "text-white" : "text-gray-900"}`}>لیست محصولات</h1>
           <div className="flex gap-3">
             <button
               onClick={() => router.push("/admin/dashboard/products/new")}
@@ -60,17 +62,17 @@ export default function ProductsListPage() {
             </button>
             <button
               onClick={() => router.push("/admin/dashboard")}
-              className="text-sm text-gray-500 hover:text-gray-800"
+              className={isDark ? "text-sm text-gray-400 hover:text-gray-200" : "text-sm text-gray-500 hover:text-gray-800"}
             >
               بازگشت به پنل
             </button>
           </div>
         </div>
 
-        {loading && <p className="text-gray-500 text-center">در حال بارگذاری...</p>}
+        {loading && <p className={isDark ? "text-gray-300 text-center" : "text-gray-500 text-center"}>در حال بارگذاری...</p>}
         {error && <p className="text-red-500 text-center">{error}</p>}
         {!loading && products.length === 0 && !error && (
-          <p className="text-gray-500 text-center">هنوز محصولی ثبت نشده است.</p>
+          <p className={isDark ? "text-gray-300 text-center" : "text-gray-500 text-center"}>هنوز محصولی ثبت نشده است.</p>
         )}
 
         <div className="flex flex-col gap-3">

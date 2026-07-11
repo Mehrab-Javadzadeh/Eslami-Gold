@@ -1,6 +1,6 @@
 <div align="center">
 
-# ✨ Eslami Gold
+# ✨Eslami Gold✨
 
 ### A Real-Time Jewelry E-Commerce Platform
 
