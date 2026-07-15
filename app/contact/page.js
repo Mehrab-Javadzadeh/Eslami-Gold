@@ -71,7 +71,7 @@ export default function ContactPage() {
             ارتباط با ما
           </h1>
           <p className={isDark ? "mt-3 text-sm max-w-md mx-auto text-gray-400" : "mt-3 text-sm max-w-md mx-auto text-gray-500"}>
-            هر سوالی درباره‌ی محصولات یا سفارش داری، از یکی از راه‌های زیر با ما در تماس باش.
+            هر سوالی درباره‌ی محصولات یا سفارش داری، از راه‌های زیر با ما در ارتباط باش.
           </p>
         </div>
 
