@@ -8,13 +8,10 @@ export default function GoldPriceBar() {
   const [error, setError] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
-  const getPrice = async (force = false) => {
+  async function getPrice(force = false) {
     try {
-      const response = await fetch(
-        `/api/gold-price${force ? "?force=true" : ""}`
-      );
-
-      const data = await response.json();
+      const res = await fetch(`/api/gold-price${force ? "?force=true" : ""}`);
+      const data = await res.json();
 
       if (data.price) {
         setPrice(data.price);
@@ -26,33 +23,23 @@ export default function GoldPriceBar() {
     } catch (err) {
       setError(true);
     }
-  };
+  }
 
   useEffect(() => {
     getPrice();
-
-    const timer = setInterval(() => {
-      getPrice();
-    }, 60000);
-
-    return () => {
-      clearInterval(timer);
-    };
+    const timer = setInterval(getPrice, 60000);
+    return () => clearInterval(timer);
   }, []);
 
-  const handleManualRefresh = async () => {
+  async function handleManualRefresh() {
     if (refreshing) return;
-
     setRefreshing(true);
 
-    const delay = new Promise((resolve) => {
-      setTimeout(resolve, 500);
-    });
-
+    const delay = new Promise((resolve) => setTimeout(resolve, 500));
     await Promise.all([getPrice(true), delay]);
 
     setRefreshing(false);
-  };
+  }
 
   const formattedTime = updatedAt
     ? new Date(updatedAt).toLocaleTimeString("fa-IR", {
@@ -64,21 +51,19 @@ export default function GoldPriceBar() {
   return (
     <div className="bg-gold-dark text-white text-xs sm:text-sm py-2 px-3 sm:px-4 flex flex-col sm:flex-row items-center justify-between gap-1 sm:gap-0 text-center sm:text-right">
       <span>
-        {error ? (
-          "دریافت قیمت با خطا مواجه شد"
-        ) : price === null ? (
-          "در حال دریافت قیمت طلا..."
-        ) : (
-          <>
-            قیمت هر گرم طلای ۱۸ عیار:{" "}
-            <strong>{price.toLocaleString("fa-IR")}</strong> ریال
-          </>
-        )}
+        {error
+          ? "دریافت قیمت با خطا مواجه شد"
+          : price === null
+          ? "در حال دریافت قیمت طلا..."
+          : (
+            <>
+              قیمت هر گرم طلای ۱۸ عیار: <strong>{price.toLocaleString("fa-IR")}</strong> ریال
+            </>
+          )}
       </span>
 
       <span className="flex items-center gap-1">
         {formattedTime && `آخرین به‌روزرسانی: ${formattedTime}`}
-
         <button
           onClick={handleManualRefresh}
           aria-label="به‌روزرسانی قیمت"
