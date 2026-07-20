@@ -30,13 +30,7 @@ export default function Header() {
             aria-label="تغییر حالت شب و روز"
             className="relative h-11 w-28 sm:h-12 sm:w-32 transition active:scale-95"
           >
-            <Image
-              src="/logo.png.jpg"
-              alt="Eslami Gold"
-              fill
-              className="object-contain"
-              priority
-            />
+            <Image src="/logo.png.jpg" alt="Eslami Gold" fill className="object-contain" priority />
           </button>
 
           <button
@@ -50,7 +44,6 @@ export default function Header() {
           </button>
         </div>
 
-        {/* خط نازک طلایی، امضای برند در پایین نوار */}
         <span className="block h-[2px] bg-gradient-to-l from-gold-light via-gold to-gold-dark" />
       </header>
 
