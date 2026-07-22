@@ -4,7 +4,7 @@
 
 ### A Real-Time Jewelry E-Commerce Platform
 
-**A modern, security-focused, full-stack web application for a jewelry business — featuring live gold-price integration, a dynamic pricing engine, and a complete admin management system.**
+**A modern, security-focused, full-stack web application for a jewelry business — A dynamic pricing engine, and a complete admin management system.**
 
 `Next.js` · `React` · `Prisma` · `Tailwind CSS` · `MIT License`
 
